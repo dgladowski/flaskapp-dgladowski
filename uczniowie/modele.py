@@ -5,21 +5,25 @@
 
 from peewee import *
 
-baza_plik = 'quiz.db'
-baza = SqliteDatabase(baza_plik)  # instancja bazy
+baza_nazwa = 'quiz.db'
+baza = SqliteDatabase(baza_nazwa)  # instancja bazy
 
 ### MODELE #
 class BazaModel(Model):
     class Meta:
         database = baza
 
+class Kategoria(BazaModel):
+    kategoria = CharField(null=False)
 
-class Uczen(BazaModel):
-    pass
+class Pytanie(BazaModel):
+    pytanie = CharField(null=False)
+    kategoria = ForeignKeyField(Kategoria, related_name='pytania')
 
-
-class Klasa(BazaModel):
-    pass
+class Odpowiedz(BazaModel):
+    odpowiedz = CharField(null=False)
+    pytanie = ForeignKeyField(Pytanie, related_name='odpowiedzi')
+    odpok = IntegerField(default=0)
 
 
 if __name__ == '__main__':
